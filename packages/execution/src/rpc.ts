@@ -33,6 +33,11 @@ export async function ethGetTransaction(rpcUrl: string, hash: string): Promise<{
   return rpc<{ hash: string } | null>(rpcUrl, "eth_getTransactionByHash", [hash]);
 }
 
+export async function ethGetBalance(rpcUrl: string, address: string): Promise<bigint> {
+  const hex = await rpc<string>(rpcUrl, "eth_getBalance", [address, "latest"]);
+  return BigInt(hex);
+}
+
 export function confirmationsOf(head: number, receipt: JsonRpcReceipt | null): number {
   if (!receipt?.blockNumber) return 0;
   const mined = Number.parseInt(receipt.blockNumber, 16);

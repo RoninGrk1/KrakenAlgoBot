@@ -25,3 +25,7 @@ export async function refreshPrices(fetchImpl: typeof fetch = fetch): Promise<vo
 export function quote(asset: Asset): { usd: number; changePct: number; ts: number } {
   return memory.prices[asset] ?? { usd: 0, changePct: 0, ts: 0 };
 }
+
+export function latestPriceTs(): number {
+  return Math.max(0, ...ASSETS.map((a) => memory.prices[a]?.ts ?? 0));
+}
