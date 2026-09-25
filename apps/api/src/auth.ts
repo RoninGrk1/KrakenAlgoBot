@@ -7,12 +7,14 @@ export function issueNonce(address: string): string {
   memory.nonces.set(address.toLowerCase(), { nonce, exp: Date.now() + 10 * 60_000 });
   return nonce;
 }
+
 export function consumeNonce(address: string, nonce: string): boolean {
   const row = memory.nonces.get(address.toLowerCase());
   if (!row) return false;
   memory.nonces.delete(address.toLowerCase());
   return row.nonce === nonce && row.exp > Date.now();
 }
+
 export function signSession(address: string): string {
   const exp = Date.now() + 12 * 60 * 60 * 1000;
   const body = Buffer.from(JSON.stringify({ address: address.toLowerCase(), exp })).toString("base64url");
@@ -22,6 +24,7 @@ export function signSession(address: string): string {
   upsertWallet(address, "ethereum");
   return token;
 }
+
 export function readSession(token: string | undefined): string | null {
   if (!token) return null;
   const local = memory.sessions.get(token);
@@ -42,11 +45,18 @@ export function readSession(token: string | undefined): string | null {
     return null;
   }
 }
+
 export function siweMessage(address: string, nonce: string): string {
   return [
     `${config.siweDomain} wants you to sign in with your Ethereum account:`,
-    address, "", "Sign in to KrakenAlgoBot. This does not move funds.", "",
-    `URI: ${config.siweUri}`, "Version: 1", "Chain ID: 1", `Nonce: ${nonce}`,
+    address,
+    "",
+    "Sign in to KrakenAlgoBot. This does not move funds.",
+    "",
+    `URI: ${config.siweUri}`,
+    "Version: 1",
+    `Chain ID: ${config.ethChainId}`,
+    `Nonce: ${nonce}`,
     `Issued At: ${new Date().toISOString()}`
   ].join("\n");
 }
