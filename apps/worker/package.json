@@ -1,0 +1,18 @@
+{
+  "name": "@kab/worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test src/**/*.test.ts"
+  },
+  "dependencies": {
+    "@kab/engine": "1.0.0",
+    "@kab/execution": "1.0.0",
+    "@kab/shared": "1.0.0"
+  },
+  "devDependencies": { "@types/node": "^22.10.1", "tsx": "^4.19.2", "typescript": "^5.6.3" }
+}
