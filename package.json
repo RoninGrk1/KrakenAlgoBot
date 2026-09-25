@@ -1,0 +1,15 @@
+{
+  "name": "kraken-algo-bot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Non-custodial automated on-chain trading for BTC, ETH and SOL.",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev:web": "npm run dev -w @kab/web",
+    "dev:api": "npm run dev -w @kab/api",
+    "dev:worker": "npm run dev -w @kab/worker",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "engines": { "node": ">=20" }
+}
