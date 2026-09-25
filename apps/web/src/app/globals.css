@@ -1,13 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root { color-scheme: dark; --font-geist: Inter, ui-sans-serif, system-ui, sans-serif; }
-html, body { min-height: 100%; background: #07080a; color: #f4f6f8; }
+
+:root {
+  color-scheme: dark;
+  --font-geist: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body {
+  min-height: 100%;
+  background: #07080a;
+  color: #f4f6f8;
+}
+
 body {
   background-image:
     radial-gradient(1200px 500px at 50% -10%, rgba(46, 204, 113, 0.08), transparent 50%),
     radial-gradient(800px 400px at 100% 0%, rgba(80, 140, 255, 0.06), transparent 45%);
 }
-button:focus-visible, a:focus-visible, input:focus-visible {
-  outline: 2px solid #3ee07a; outline-offset: 2px;
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid #3ee07a;
+  outline-offset: 2px;
+}
+
+input[type="range"] {
+  accent-color: #3ee07a;
 }
