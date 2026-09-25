@@ -1,0 +1,8 @@
+FROM node:20-alpine
+WORKDIR /app
+COPY package.json package-lock.json* ./
+COPY packages ./packages
+COPY apps/worker ./apps/worker
+RUN npm install --workspace=@kab/worker --workspace=@kab/shared --workspace=@kab/engine --workspace=@kab/execution
+WORKDIR /app/apps/worker
+CMD ["npm", "start"]
