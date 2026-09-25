@@ -1,0 +1,14 @@
+{
+  "name": "@kab/execution",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": { ".": "./src/index.ts" },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test src/**/*.test.ts"
+  },
+  "dependencies": { "@kab/shared": "1.0.0" },
+  "devDependencies": { "tsx": "^4.19.2", "typescript": "^5.6.3" }
+}
