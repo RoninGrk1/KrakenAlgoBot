@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: kab
+      POSTGRES_PASSWORD: kab
+      POSTGRES_DB: kab
+    ports: ["5432:5432"]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/sql/001_init.sql:/docker-entrypoint-initdb.d/001_init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kab -d kab"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  api:
+    build: { context: ., dockerfile: infra/docker/Dockerfile.api }
+    env_file: .env
+    environment:
+      PORT: 8080
+      DATABASE_URL: postgres://kab:kab@postgres:5432/kab
+      REDIS_URL: redis://redis:6379
+    ports: ["8080:8080"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+  worker:
+    build: { context: ., dockerfile: infra/docker/Dockerfile.worker }
+    env_file: .env
+    environment:
+      API_PUBLIC_URL: http://api:8080
+      DATABASE_URL: postgres://kab:kab@postgres:5432/kab
+    depends_on: [api]
+  web:
+    build: { context: ., dockerfile: infra/docker/Dockerfile.web }
+    environment:
+      API_PUBLIC_URL: http://api:8080
+      NEXT_PUBLIC_API_URL: /api-backend
+    ports: ["3000:3000"]
+    depends_on: [api]
+volumes:
+  pgdata:
